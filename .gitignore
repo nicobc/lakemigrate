@@ -1,0 +1,8 @@
+.idea/
+.DS_Store
+/data/
+**/.venv/
+**/__pycache__/
+**/*.pyc
+.claude/notes/
+.claude/settings.local.json

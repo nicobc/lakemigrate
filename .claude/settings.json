@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(cat app/.env*)",
+      "Bash(cat:app/.env*)",
+      "Read(app/.env*)",
+      "Bash(cat supabase/.env*)",
+      "Bash(cat:supabase/.env*)",
+      "Read(supabase/.env*)",
+      "Bash(cat .env*)",
+      "Bash(cat:.env*)",
+      "Read(.env*)"
+    ],
+    "ask": [
+      "Edit(.claude/**)"
+    ],
+    "allow": [
+      "Bash(git log:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git fetch:*)",
+      "Bash(git branch:*)",
+      "Bash(/opt/homebrew/bin/gh pr checks:*)",
+      "Bash(/opt/homebrew/bin/gh pr list:*)",
+      "Bash(/opt/homebrew/bin/gh pr view:*)",
+      "Bash(/opt/homebrew/bin/gh run watch:*)",
+      "Bash(/opt/homebrew/bin/gh run view:*)",
+      "Bash(/opt/homebrew/bin/gh run list:*)"
+    ]
+  }
+}
