@@ -1,11 +1,16 @@
 import argparse
+import logging
 import sys
 
 from lakemigrate._backend.delta import DEFAULT_HISTORY_TABLE
 from lakemigrate._engine import migrate
 
+logger = logging.getLogger(__name__)
+
 
 def main() -> None:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
+
     parser = argparse.ArgumentParser(
         prog="lakemigrate",
         description="Run pending SQL migrations against a Delta lakehouse.",
@@ -31,5 +36,5 @@ def main() -> None:
     try:
         migrate(args.migrations_dir, args.history_table)
     except Exception as exc:
-        print(f"Error: {exc}", file=sys.stderr)
+        logger.error(str(exc))
         sys.exit(1)
