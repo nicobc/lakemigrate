@@ -28,7 +28,7 @@ def spark() -> Generator[SparkSession, None, None]:
 
 @pytest.fixture
 def history_table(spark: SparkSession) -> Generator[str, None, None]:
-    name = f"default.test_history_{uuid.uuid4().hex[:8]}"
+    name = f"test_history_{uuid.uuid4().hex[:8]}"
     yield name
     spark.sql(f"DROP TABLE IF EXISTS {name}")  # type: ignore[reportUnknownMemberType]
 
