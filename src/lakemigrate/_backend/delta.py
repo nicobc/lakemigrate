@@ -32,10 +32,11 @@ class DeltaBackend:
 
     def _ensure_history_table(self) -> None:
         logger.debug(f"ensuring history table exists: {self._history_table}")
-        self._session.sql(  # type: ignore[reportUnknownMemberType]
-            f"CREATE TABLE IF NOT EXISTS {self._history_table} "
-            f"(version INT, description STRING, checksum STRING, applied_at TIMESTAMP) "
-            f"USING delta"
+        (
+            self._session.createDataFrame([], schema=_HISTORY_TABLE_SCHEMA)  # type: ignore[reportUnknownMemberType]
+            .write.format("delta")
+            .mode("ignore")
+            .saveAsTable(self._history_table)
         )
 
     def execute(self, sql: str) -> None:
