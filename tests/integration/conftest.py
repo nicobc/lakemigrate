@@ -17,18 +17,11 @@ if TYPE_CHECKING:
 def spark() -> Generator[SparkSession, None, None]:
     pytest.importorskip("pyspark")
     pytest.importorskip("delta")
+    from delta import configure_spark_with_delta_pip
     from pyspark.sql import SparkSession as _SparkSession
 
-    session = (
-        _SparkSession.builder.master("local")
-        .appName("lakemigrate-integration-test")
-        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-        .config(
-            "spark.sql.catalog.spark_catalog",
-            "org.apache.spark.sql.delta.catalog.DeltaCatalog",
-        )
-        .getOrCreate()
-    )
+    builder = _SparkSession.builder.master("local").appName("lakemigrate-integration-test")
+    session = configure_spark_with_delta_pip(builder).getOrCreate()
     yield session
     session.stop()
 
