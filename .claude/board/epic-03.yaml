@@ -2,12 +2,12 @@ id: EPIC-03
 title: SparkSQL lakehouse backend
 scope: spark
 type: feat
-status: READY
+status: IN PROGRESS
 description: The first concrete backend — runs migrations against Delta or Iceberg using a SparkSession and tracks applied migrations in a history table stored in the same format.
 tickets:
   - id: T1
     type: feat
-    status: READY
+    status: IN PROGRESS
     title: SparkSQL backend
     description: Implement the backend protocol for Spark-based lakehouse formats. The history table is created on first use in the requested format.
     ac:
