@@ -1,9 +1,4 @@
 in_progress:
-  - id: EPIC-02
-    title: Migration runner core
-    scope: core
-    type: feat
-    status: IN PROGRESS
 ready:
   - id: EPIC-03
     title: SparkSQL lakehouse backend
@@ -21,6 +16,11 @@ ready:
     type: ci
     status: READY
 done:
+  - id: EPIC-02
+    title: Migration runner core
+    scope: core
+    type: feat
+    status: DONE
   - id: EPIC-01
     title: Package scaffolding
     scope: scaffold

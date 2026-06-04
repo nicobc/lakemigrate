@@ -2,7 +2,7 @@ id: EPIC-02
 title: Migration runner core
 scope: core
 type: feat
-status: IN PROGRESS
+status: DONE
 description: The backend-agnostic heart of lakemigrate — a protocol backends must satisfy, migration file discovery, and the execution loop. No Spark or Delta dependency here.
 tickets:
   - id: T1
@@ -54,7 +54,7 @@ tickets:
 
   - id: T4
     type: test
-    status: IN PROGRESS
+    status: DONE
     title: In-memory stub backend and runner test suite
     description: A minimal in-memory backend for use in tests, plus a thorough test suite for the runner covering all key paths.
     ac:
