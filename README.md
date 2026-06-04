@@ -3,7 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/lakemigrate)](https://pypi.org/project/lakemigrate/)
 [![Python](https://img.shields.io/pypi/pyversions/lakemigrate)](https://pypi.org/project/lakemigrate/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/nicobc/lakemigrate/actions/workflows/ci.yml/badge.svg)](https://github.com/nicobc/lakemigrate/actions/workflows/ci.yml)
+[![CI](https://github.com/nicobc/lakemigrate/actions/workflows/test.yml/badge.svg)](https://github.com/nicobc/lakemigrate/actions/workflows/test.yml)
 
 Ordered SQL migrations with a version table for Delta lakehouse storage.
 
