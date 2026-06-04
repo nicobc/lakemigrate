@@ -7,7 +7,7 @@ description: The backend-agnostic heart of lakemigrate — a protocol backends m
 tickets:
   - id: T1
     type: feat
-    status: IN PROGRESS
+    status: DONE
     title: Backend protocol
     description: Define the Python Protocol that all backends must implement. Internal abstraction — not exposed in the public API.
     ac:
@@ -20,7 +20,7 @@ tickets:
 
   - id: T2
     type: feat
-    status: READY
+    status: IN PROGRESS
     title: Migration file discovery and ordering
     description: Scan a directory for .sql migration files, parse their numeric prefix, and return them sorted ascending.
     ac:
