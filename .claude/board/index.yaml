@@ -1,7 +1,7 @@
 in_progress:
   - id: EPIC-05
     title: CI and publish
-    scope: ci
+    scope: pypi
     type: ci
 ready:
 done:

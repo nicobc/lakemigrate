@@ -25,8 +25,8 @@ Issues = "https://github.com/nicobc/lakemigrate/issues"
 
 [project.optional-dependencies]
 spark = [
-    "pyspark>=3.3",
-    "delta-spark>=2.3",
+    "pyspark>=3.3,<4",
+    "delta-spark>=2.3,<4",
 ]
 
 [project.scripts]
