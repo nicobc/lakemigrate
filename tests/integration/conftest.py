@@ -20,8 +20,8 @@ def spark() -> Generator[SparkSession, None, None]:
     from delta import configure_spark_with_delta_pip
     from pyspark.sql import SparkSession as _SparkSession
 
-    builder = _SparkSession.builder.master("local").appName("lakemigrate-integration-test")
-    session = configure_spark_with_delta_pip(builder).getOrCreate()
+    builder = _SparkSession.builder.master("local").appName("lakemigrate-integration-test")  # type: ignore[reportUnknownMemberType]
+    session = configure_spark_with_delta_pip(builder).getOrCreate()  # type: ignore[reportUnknownArgumentType,reportUnknownMemberType]
     yield session
     session.stop()
 
