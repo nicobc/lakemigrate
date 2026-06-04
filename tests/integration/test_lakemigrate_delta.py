@@ -10,7 +10,7 @@ from lakemigrate._discovering import discover_migrations
 from lakemigrate._running import run_migrations
 
 if TYPE_CHECKING:
-    from lakemigrate._spark import SparkBackend
+    from lakemigrate._delta import DeltaBackend
 
 pytestmark = pytest.mark.integration
 
@@ -25,7 +25,7 @@ pytestmark = pytest.mark.integration
     ids=["fresh_run", "idempotent_run", "partial_run"],
 )
 def test_run_migrations(
-    backend: SparkBackend,
+    backend: DeltaBackend,
     write_migration: Callable[[int, str, str], None],
     tmp_path: Path,
     input_pre_applied: int,
@@ -41,7 +41,7 @@ def test_run_migrations(
 
 
 def test_checksum_mismatch(
-    backend: SparkBackend,
+    backend: DeltaBackend,
     write_migration: Callable[[int, str, str], None],
     tmp_path: Path,
 ) -> None:

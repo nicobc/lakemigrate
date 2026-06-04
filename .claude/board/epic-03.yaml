@@ -1,6 +1,6 @@
 id: EPIC-03
 title: Delta lakehouse backend
-scope: spark
+scope: delta
 type: feat
 status: DONE
 description: The first concrete backend — runs migrations against Delta tables using a SparkSession and tracks applied migrations in a history table stored in Delta format.
@@ -11,9 +11,9 @@ tickets:
     title: Delta backend
     description: Implement the backend protocol for Delta lakehouse format. The history table is created on first use.
     ac:
-      - Class satisfies the backend protocol (pyright confirms)
+      - DeltaBackend satisfies the backend protocol (pyright confirms)
       - History table is created automatically if it does not exist, in Delta format
-      - History table schema — version INT, description STRING, checksum STRING, applied_at TIMESTAMP (set server-side via current_timestamp())
+      - History table schema — version INT, description STRING, checksum STRING, applied_at TIMESTAMP (set client-side)
       - History table name is fully qualified (catalog.schema.table) and configurable, defaults to "default.lakemigrate_history"
       - execute() runs arbitrary SQL via spark.sql() — no inspection of user SQL
       - get_applied_migrations() returns a dict mapping version to checksum

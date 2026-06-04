@@ -13,7 +13,7 @@ ready:
 done:
   - id: EPIC-03
     title: Delta lakehouse backend
-    scope: spark
+    scope: delta
     type: feat
     status: DONE
   - id: EPIC-02

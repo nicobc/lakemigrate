@@ -18,14 +18,14 @@ _HISTORY_TABLE_SCHEMA = StructType(
 )
 
 
-class SparkBackend:
+class DeltaBackend:
     def __init__(
         self,
         history_table: str = _DEFAULT_HISTORY_TABLE,
     ) -> None:
         session = SparkSession.getActiveSession()
         if session is None:
-            raise RuntimeError("No active SparkSession — start one before using SparkBackend")
+            raise RuntimeError("No active SparkSession — start one before using DeltaBackend")
         self._session = session
         self._history_table = history_table
         self._ensure_history_table()

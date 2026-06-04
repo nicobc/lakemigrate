@@ -10,7 +10,7 @@ import pytest
 if TYPE_CHECKING:
     from pyspark.sql import SparkSession
 
-    from lakemigrate._spark import SparkBackend
+    from lakemigrate._delta import DeltaBackend
 
 
 @pytest.fixture(scope="session")
@@ -41,10 +41,10 @@ def history_table(spark: SparkSession) -> Generator[str, None, None]:
 
 
 @pytest.fixture
-def backend(history_table: str) -> SparkBackend:
-    from lakemigrate._spark import SparkBackend as _SparkBackend
+def backend(history_table: str) -> DeltaBackend:
+    from lakemigrate._delta import DeltaBackend as _DeltaBackend
 
-    return _SparkBackend(history_table=history_table)
+    return _DeltaBackend(history_table=history_table)
 
 
 @pytest.fixture
