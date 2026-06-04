@@ -18,7 +18,7 @@ All epics have a `scope` field: short human-readable name used in commit message
 ## ticket statuses
 Valid values: IDEATION, READY, IN PROGRESS, DONE, DISCARDED.
 
-Lifecycle: READY → IN PROGRESS → TESTING → DONE.
+Lifecycle: READY → IN PROGRESS → DONE.
 
 DISCARDED tickets stay in their file. Do not delete or renumber.
 
@@ -43,13 +43,10 @@ Board status updates can be standalone commits within the branch. The commit tha
 ## release order
 The `ready` and `ideation` lists in `index.yaml` are maintained in planned release order — top entry ships next. Reordering these lists requires explicit owner approval.
 
-A release requires a CalVer tag if the epic contains any `feat` or `fix` tickets. Pure `ci`/`chore`/`docs` epics do not.
+A release requires a SemVer tag if the epic contains any `feat` or `fix` tickets. Pure `ci`/`chore`/`docs` epics do not.
 
 ## grooming convention
 Grooming commits include the epic file and any corresponding index.yaml changes.
-
-## maintenance index section
-Open tickets from `maintenance.yaml` plus any open non-`feat` tickets from feature epics appear in the `maintenance:` section of `index.yaml`. Load individual files only when you need ticket detail.
 
 ## epic filenames
 Epic yaml files use lowercase: `epic-07.yaml` not `EPIC-07.yaml`. The `id:` field inside the file stays uppercase (`id: EPIC-07`).

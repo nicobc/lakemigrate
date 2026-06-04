@@ -1,0 +1,38 @@
+id: EPIC-04
+title: Public API and CLI
+scope: api
+type: feat
+status: READY
+description: The two user-facing surfaces — a top-level Python function for notebook and job use, and a CLI for pipeline and shell use. Both are thin wrappers over the runner and SparkSQL backend.
+tickets:
+  - id: T1
+    type: feat
+    status: READY
+    title: Python API
+    description: Top-level migrate() function that users call from a notebook or job. Implicitly uses the SparkSQL backend (the only backend for now); the API will be revisited if a second backend is ever introduced.
+    ac:
+      - lakemigrate.migrate(migrations_dir, version_table="default.lakemigrate_history", table_format="delta") runs all pending migrations
+      - migrations_dir accepts str or pathlib.Path
+      - Function is importable directly from lakemigrate
+      - Propagates runner and backend errors without wrapping them
+    notes:
+      - Thin wrapper — constructs SparkBackend then delegates to the runner
+      - SparkSession is obtained inside SparkBackend via getActiveSparkSession() — not a parameter
+      - Do not add kwargs or options beyond what the runner needs
+
+  - id: T2
+    type: feat
+    status: READY
+    title: CLI
+    description: Shell command that wraps the Python API for use in pipelines and local development.
+    ac:
+      - lakemigrate migrate --migrations-dir <path> works with defaults for version-table and table-format
+      - All three options are exposed — --migrations-dir, --version-table, --table-format
+      - Non-zero exit code on any error, with a human-readable message to stderr
+      - lakemigrate --help and lakemigrate migrate --help are coherent and complete
+      - Registered as a console_scripts entry point
+    notes:
+      - Use argparse (stdlib — no extra dependency)
+      - SparkSession is obtained inside SparkBackend via getActiveSparkSession()
+      - Entry point name is lakemigrate
+      - Default values for --version-table and --table-format match the Python API defaults

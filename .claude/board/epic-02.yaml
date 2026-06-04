@@ -1,0 +1,64 @@
+id: EPIC-02
+title: Migration runner core
+scope: core
+type: feat
+status: READY
+description: The backend-agnostic heart of lakemigrate — a protocol backends must satisfy, migration file discovery, and the execution loop. No Spark or Delta dependency here.
+tickets:
+  - id: T1
+    type: feat
+    status: READY
+    title: Backend protocol
+    description: Define the Python Protocol that all backends must implement. Internal abstraction — not exposed in the public API.
+    ac:
+      - Protocol is defined and importable (not re-exported from the top-level package)
+      - Three methods — execute(sql: str) -> None, get_applied_migrations() -> dict[int, str] (version -> checksum), record_version(version: int, description: str, checksum: str) -> None
+      - A class implementing the three methods satisfies the protocol without inheriting from it (structural subtyping)
+    notes:
+      - Use typing.Protocol — no forced inheritance
+      - get_applied_migrations returns a dict so the runner can look up checksums by version in O(1)
+
+  - id: T2
+    type: feat
+    status: READY
+    title: Migration file discovery and ordering
+    description: Scan a directory for .sql migration files, parse their numeric prefix, and return them sorted ascending.
+    ac:
+      - Returns files sorted by numeric version
+      - Zero-padded and non-padded prefixes are equivalent (001 == 1)
+      - Raises a clear error on duplicate version numbers
+      - Raises a clear error on files that do not match the naming convention (NNN__description.sql)
+      - Non-.sql files in the directory are silently ignored
+    notes:
+      - Naming pattern is NNN__description.sql (double underscore separator, no leading type letter)
+      - Gaps in version sequence are allowed — do not error on them
+
+  - id: T3
+    type: feat
+    status: READY
+    title: Migration runner
+    description: Core execution loop — given a backend and a migrations directory, determine which migrations are pending and execute them in order, recording each on success. Also verifies checksums of already-applied migrations.
+    ac:
+      - Already-applied migrations are skipped
+      - Pending migrations execute in ascending version order
+      - Each migration is recorded immediately after successful execution (with its SHA-256 checksum)
+      - A failure halts the run, propagates the error, and does not record the failed migration
+      - Running against an up-to-date state is a no-op
+      - If an already-applied migration file has changed (checksum mismatch), raise a hard error before executing anything
+    notes:
+      - Checksum is SHA-256 of the raw file content (bytes), hex-encoded
+      - Checksum verification runs upfront across all applied migrations before any execution begins
+      - No transaction wrapping at the runner level — atomicity is the backend's concern
+      - Runner has no knowledge of Spark, Delta, or Iceberg
+
+  - id: T4
+    type: test
+    status: READY
+    title: In-memory stub backend and runner test suite
+    description: A minimal in-memory backend for use in tests, plus a thorough test suite for the runner covering all key paths.
+    ac:
+      - Stub backend satisfies the protocol (pyright confirms)
+      - Tests cover — fresh run (all applied), up-to-date run (no-op), partial run (only pending applied), failure mid-run (halts, failed migration not recorded), checksum mismatch on applied migration (hard error before any execution)
+    notes:
+      - Stub backend lives in tests/ — it is a test fixture, not a shipped backend
+      - Use pytest fixtures for the stub backend and tmp_path for migration file directories

@@ -1,6 +1,6 @@
 # Releasing
 
-Production deploys are triggered by pushing a CalVer tag. The tag is the deploy decision — always manual. A release typically includes multiple PRs.
+Releases are triggered by pushing a SemVer tag (`vMAJOR.MINOR.PATCH`). The tag is the release decision — always manual. A release typically includes multiple PRs.
 
 Commit convention follows `.claude/board/rules.md`.
 
@@ -14,26 +14,25 @@ Omit the test plan section when there is nothing to test — changes confined to
 
 ## Local setup
 
-After cloning, activate the pre-commit hook:
+After cloning:
 ```bash
-git config core.hooksPath .githooks
+uv sync
+uv run pre-commit install
 ```
 
 ## Branching
 
-Work on short-lived feature branches cut directly from `main`. Branch name mirrors the commit type and scope: `type/scope` (e.g. `feat/cost-tracker`, `ci/deployment`, `fix/kanban`). Delete the branch after the PR merges.
-
-Each branch gets its own Cloudflare Pages preview deployment.
+Work on short-lived feature branches cut directly from `main`. Branch name mirrors the commit type and scope: `type/scope` (e.g. `feat/core`, `ci/publish`, `fix/checksum`). Delete the branch after the PR merges.
 
 ## Release planning
 
-Releases are planned in `.claude/board/roadmap.yaml`. Each release bundles one or more complete epics and any relevant maintenance tickets. Never ship a partial epic.
+Releases are planned in `.claude/board/` — `index.yaml` for the overview, individual epic files for ticket detail. Each release bundles one or more complete epics. Never ship a partial epic.
 
-A release requires a CalVer tag if the epic contains any `feat` or `fix` tickets. Pure `ci`/`chore`/`docs` epics do not.
+A release requires a SemVer tag if the epic contains any `feat` or `fix` tickets. Pure `ci`/`chore`/`docs` epics do not.
 
 ## Process
 
-Before writing any status value to a board file, confirm the ticket's current status and that the intended transition is the immediate next step. The only valid moves are READY → IN PROGRESS (work starts), IN PROGRESS → TESTING (PR created), TESTING → DONE (CI passes). Any other jump is wrong.
+Before writing any status value to a board file, confirm the ticket's current status and that the intended transition is the immediate next step. The only valid moves are READY → IN PROGRESS (work starts), IN PROGRESS → DONE (CI passes). Any other jump is wrong.
 
 1. Mark the ticket IN PROGRESS. Cut a branch from main:
    ```bash
@@ -43,16 +42,14 @@ Before writing any status value to a board file, confirm the ticket's current st
 2. Commit following conventional commits.
 3. `git push origin type/scope`
 4. Create the PR:
-   `/opt/homebrew/bin/gh pr create --base main --head type/scope --repo nicobc/patos`
-   - If the PR has a test plan (manual verification needed): commit the TESTING board update now, before watching CI.
-   - If the PR has no test plan: skip the TESTING commit — go straight to step 6 after CI passes.
-5. `sleep 5` then watch all PR checks: `/opt/homebrew/bin/gh pr checks <n> --repo nicobc/patos --watch`
+   `/opt/homebrew/bin/gh pr create --base main --head type/scope --repo nicobc/lakemigrate`
+5. `sleep 5` then watch all PR checks: `/opt/homebrew/bin/gh pr checks <n> --repo nicobc/lakemigrate --watch`
    - CI is the authoritative source of truth — local tests passing is not sufficient.
    - CI failure → fix and return to step 2. Never merge a failing PR.
-6. CI passes. Commit the DONE board update with `Closes EPIC-XXX/TN` footer before merging. Push it, then re-watch checks before attempting merge:
-   `sleep 5 && /opt/homebrew/bin/gh pr checks <n> --repo nicobc/patos --watch`
+6. CI passes. Commit the DONE board update with `Closes EPIC-XX/TN` footer before merging. Push it, then re-watch checks before attempting merge:
+   `sleep 5 && /opt/homebrew/bin/gh pr checks <n> --repo nicobc/lakemigrate --watch`
 7. Get explicit approval before merging. PR title must follow conventional commits — it becomes the squash commit message on main.
-   `/opt/homebrew/bin/gh pr merge <n> --squash --delete-branch --repo nicobc/patos`
+   `/opt/homebrew/bin/gh pr merge <n> --squash --delete-branch --repo nicobc/lakemigrate`
 8. Clean up local branch:
    ```bash
    git switch main
@@ -60,15 +57,14 @@ Before writing any status value to a board file, confirm the ticket's current st
    git branch -D type/scope
    ```
    `-D` required — squash merges leave the local branch unrecognised as merged by git.
-9. _(Only if `deploy: true` for this release in `.claude/board/roadmap.yaml`)_ Create and push a CalVer tag from main:
+9. _(Only if the release contains any `feat` or `fix` tickets)_ Create and push a SemVer tag from main:
    ```bash
    git fetch origin main
-   git tag vYYYY.MM.N origin/main
-   git push origin vYYYY.MM.N
+   git tag vMAJOR.MINOR.PATCH origin/main
+   git push origin vMAJOR.MINOR.PATCH
    ```
-   Increment the patch number within the month (e.g. `v2026.05.2` follows `v2026.05.1`).
-   Watch deploy: `/opt/homebrew/bin/gh run watch <run-id> --repo nicobc/patos`. Report success or failure.
+   Increment patch for bug fixes, minor for new features, major for breaking changes.
 
 ## GHA workflow testing
 
-When iterating on a GHA workflow: commit and push the change, dispatch with `gh workflow run <file> --ref <branch> --repo nicobc/patos`, then immediately watch with `gh run watch <run-id> --repo nicobc/patos`. On failure, fetch logs with `gh run view <run-id> --log-failed --repo nicobc/patos`, diagnose, fix, and repeat — without waiting for the user to paste output. `gh` is at `/opt/homebrew/bin/gh`.
+When iterating on a GHA workflow: commit and push the change, dispatch with `gh workflow run <file> --ref <branch> --repo nicobc/lakemigrate`, then immediately watch with `gh run watch <run-id> --repo nicobc/lakemigrate`. On failure, fetch logs with `gh run view <run-id> --log-failed --repo nicobc/lakemigrate`, diagnose, fix, and repeat — without waiting for the user to paste output. `gh` is at `/opt/homebrew/bin/gh`.
