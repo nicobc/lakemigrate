@@ -32,6 +32,7 @@ tickets:
     notes:
       - Naming pattern is NNN__description.sql (double underscore separator, no leading type letter)
       - Gaps in version sequence are allowed — do not error on them
+      - Assumes migrations are bundled with application code and accessible as local paths at runtime (same pattern as Alembic/Flyway). Teams that store migrations out-of-band can implement their own loader and pass list[Migration] to run_migrations directly.
 
   - id: T3
     type: feat
