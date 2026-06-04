@@ -1,0 +1,37 @@
+id: EPIC-05
+title: CI and publish
+scope: ci
+type: ci
+status: READY
+description: GitHub Actions workflows — one to run the test suite on every push and PR, one to publish to PyPI on a SemVer tag.
+tickets:
+  - id: T1
+    type: ci
+    status: READY
+    title: Test workflow
+    description: Run the full test suite (unit + integration) on every push and on PRs targeting main. Reports a required status check named "status" to satisfy branch protection.
+    ac:
+      - Triggers on push to any branch and on pull_request targeting main
+      - Java is pre-installed (required for Spark)
+      - Both unit tests and integration tests run
+      - ruff check and pyright run as part of the workflow
+      - Workflow reports a job named "status" (matches branch protection rule)
+      - uv dependencies are cached between runs
+    notes:
+      - Use ubuntu-latest
+      - Install Java via actions/setup-java before uv setup
+      - Cache the uv virtualenv keyed on pyproject.toml hash
+
+  - id: T2
+    type: ci
+    status: READY
+    title: Publish workflow
+    description: Build and publish the package to PyPI when a SemVer tag is pushed to main.
+    ac:
+      - Triggers on push of tags matching v*.*.* targeting main
+      - Publishes using PyPI trusted publishing (OIDC — no API key stored in secrets)
+      - Build uses uv
+      - Fails loudly if the tag does not point to a commit on main
+    notes:
+      - Configure trusted publishing on PyPI before wiring the workflow (project must exist there first)
+      - SemVer tag format is vMAJOR.MINOR.PATCH per RELEASING.md

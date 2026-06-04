@@ -1,0 +1,41 @@
+id: EPIC-03
+title: SparkSQL lakehouse backend
+scope: spark
+type: feat
+status: READY
+description: The first concrete backend — runs migrations against Delta or Iceberg using a SparkSession and tracks applied migrations in a history table stored in the same format.
+tickets:
+  - id: T1
+    type: feat
+    status: READY
+    title: SparkSQL backend
+    description: Implement the backend protocol for Spark-based lakehouse formats. The history table is created on first use in the requested format.
+    ac:
+      - Class satisfies the backend protocol (pyright confirms)
+      - Accepts table_format ("delta" or "iceberg"), defaults to "delta"
+      - History table is created automatically if it does not exist, using the requested format
+      - History table schema — version INT, description STRING, checksum STRING, applied_at TIMESTAMP (set server-side via current_timestamp())
+      - History table name is fully qualified (catalog.schema.table) and configurable, defaults to "default.lakemigrate_history"
+      - execute() runs arbitrary SQL via spark.sql() — no inspection of user SQL
+      - get_applied_migrations() returns a dict mapping version to checksum
+      - record_version() appends a row to the history table
+      - SparkSession is obtained via getActiveSparkSession() — not passed by the caller
+    notes:
+      - Risk — the history table DDL (CREATE TABLE, INSERT, SELECT) is assumed to work identically for Iceberg with only the USING clause swapped. Verify this during implementation; if Iceberg requires different SQL, encapsulate the differences inside this class. User migration files are always pass-through and are never inspected.
+
+  - id: T2
+    type: test
+    status: READY
+    title: SparkSQL backend integration tests
+    description: End-to-end test suite that runs the full migration flow against a local Spark instance.
+    ac:
+      - Tests run with uv run pytest -m integration
+      - Cover Delta format — fresh run, idempotent run, partial run, checksum mismatch error
+      - Cover Iceberg format — same cases (if Iceberg is available in the test environment)
+      - SparkSession and history table are torn down after each test
+      - Tests are skipped gracefully if the required packages are not installed
+    notes:
+      - Use a session-scoped pytest fixture for the SparkSession (startup is slow)
+      - Use tmp_path for migration files and a unique table name per test to avoid collisions
+      - Mark with pytest.mark.integration so unit tests can run without Spark
+      - Iceberg tests may require different Spark dependencies than delta-spark — investigate during implementation and note any extra CI setup needed

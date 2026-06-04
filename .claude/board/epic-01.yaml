@@ -1,0 +1,26 @@
+id: EPIC-01
+title: Package scaffolding
+scope: scaffold
+type: chore
+status: READY
+description: Bootstrap the project as a properly structured Python package — build system, dev tooling, and an importable (but empty) package.
+tickets:
+  - id: T1
+    type: chore
+    status: READY
+    title: Initialize package with uv, ruff, pyright, pytest, and pre-commit
+    description: Set up pyproject.toml, src/lakemigrate/ layout, ruff (format locally), pyright (type-check everywhere), pytest, and pre-commit hooks.
+    ac:
+      - Package is importable (python -c "import lakemigrate")
+      - uv run pytest passes (empty suite is fine)
+      - uv run ruff format --check . passes
+      - uv run ruff check . passes
+      - uv run pyright passes
+      - pre-commit run --all-files passes
+    notes:
+      - Use src layout (src/lakemigrate/)
+      - Target Python 3.10+ to match Databricks LTS runtimes
+      - PySpark and delta-spark are optional dependencies (extras), not hard deps — core must be importable without them
+      - Include a py.typed marker
+      - Pre-commit hooks — ruff format --fix (auto-format), ruff check --fix (auto-fix lint), pyright (type errors caught on commit)
+      - CI runs ruff check (no --fix) and pyright — formatting and lint fixes are the committer's job
