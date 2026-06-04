@@ -2,7 +2,7 @@ id: EPIC-05
 title: CI and publish
 scope: pypi
 type: ci
-status: READY
+status: IN PROGRESS
 description: GitHub Actions workflows — one to run the test suite on every push and PR, one to publish to PyPI on a SemVer tag.
 tickets:
   - id: T1
@@ -42,7 +42,7 @@ tickets:
 
   - id: T3
     type: ci
-    status: READY
+    status: IN PROGRESS
     title: Publish workflow
     description: Build and publish the package to PyPI when a SemVer tag is pushed to main.
     ac:
