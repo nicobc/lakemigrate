@@ -25,7 +25,7 @@ tickets:
 
   - id: T2
     type: ci
-    status: IN PROGRESS
+    status: DONE
     title: Test workflow
     description: Run the full test suite (unit + integration) on every push and on PRs targeting main. Reports a required status check named "status" to satisfy branch protection.
     ac:
