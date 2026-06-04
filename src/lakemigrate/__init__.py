@@ -1,3 +1,3 @@
-from lakemigrate._migrating import migrate
+from lakemigrate._engine import migrate
 
 __all__ = ["migrate"]

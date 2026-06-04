@@ -2,8 +2,8 @@ import hashlib
 
 import pytest
 
+from lakemigrate._engine import run_migrations
 from lakemigrate._migration import Migration
-from lakemigrate._running import run_migrations
 from tests.unit.conftest import StubBackend
 
 

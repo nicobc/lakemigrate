@@ -1,6 +1,6 @@
 import pytest
 
-from lakemigrate._protocol import Backend
+from lakemigrate._backend.protocol import Backend
 
 
 class StubBackend:

@@ -6,11 +6,10 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from lakemigrate._discovering import discover_migrations
-from lakemigrate._running import run_migrations
+from lakemigrate._engine import discover_migrations, run_migrations
 
 if TYPE_CHECKING:
-    from lakemigrate._delta import DeltaBackend
+    from lakemigrate._backend.delta import DeltaBackend
 
 pytestmark = pytest.mark.integration
 
