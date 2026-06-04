@@ -1,0 +1,9 @@
+from typing import Protocol
+
+
+class Backend(Protocol):
+    def execute(self, sql: str) -> None: ...
+
+    def get_applied_migrations(self) -> dict[int, str]: ...
+
+    def record_version(self, version: int, description: str, checksum: str) -> None: ...

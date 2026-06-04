@@ -2,12 +2,12 @@ id: EPIC-02
 title: Migration runner core
 scope: core
 type: feat
-status: READY
+status: DONE
 description: The backend-agnostic heart of lakemigrate — a protocol backends must satisfy, migration file discovery, and the execution loop. No Spark or Delta dependency here.
 tickets:
   - id: T1
     type: feat
-    status: READY
+    status: DONE
     title: Backend protocol
     description: Define the Python Protocol that all backends must implement. Internal abstraction — not exposed in the public API.
     ac:
@@ -20,7 +20,7 @@ tickets:
 
   - id: T2
     type: feat
-    status: READY
+    status: DONE
     title: Migration file discovery and ordering
     description: Scan a directory for .sql migration files, parse their numeric prefix, and return them sorted ascending.
     ac:
@@ -32,10 +32,11 @@ tickets:
     notes:
       - Naming pattern is NNN__description.sql (double underscore separator, no leading type letter)
       - Gaps in version sequence are allowed — do not error on them
+      - Assumes migrations are bundled with application code and accessible as local paths at runtime (same pattern as Alembic/Flyway). Teams that store migrations out-of-band can implement their own loader and pass list[Migration] to run_migrations directly.
 
   - id: T3
     type: feat
-    status: READY
+    status: DONE
     title: Migration runner
     description: Core execution loop — given a backend and a migrations directory, determine which migrations are pending and execute them in order, recording each on success. Also verifies checksums of already-applied migrations.
     ac:
@@ -53,7 +54,7 @@ tickets:
 
   - id: T4
     type: test
-    status: READY
+    status: DONE
     title: In-memory stub backend and runner test suite
     description: A minimal in-memory backend for use in tests, plus a thorough test suite for the runner covering all key paths.
     ac:

@@ -44,6 +44,7 @@ venv = ".venv"
 
 [tool.pytest.ini_options]
 testpaths = ["tests/unit", "tests/integration"]
+pythonpath = ["."]
 markers = [
     "integration: marks tests requiring Spark (deselect with -m 'not integration')",
 ]
