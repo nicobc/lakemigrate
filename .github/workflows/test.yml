@@ -7,7 +7,21 @@ on:
     branches: [main]
 
 jobs:
-  status:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - uses: dorny/paths-filter@v4.0.1
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
+  test:
+    needs: changes
+    if: needs.changes.outputs.src == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,3 +47,12 @@ jobs:
 
       - name: Integration tests
         run: uv run pytest -m integration
+
+  status:
+    needs: [changes, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          result="${{ needs.test.result }}"
+          [[ "$result" == "failure" || "$result" == "cancelled" ]] && exit 1 || exit 0
