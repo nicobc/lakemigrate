@@ -1,14 +1,14 @@
-in_progress:
-  - id: EPIC-04
-    title: Public API and CLI
-    scope: api
-    type: feat
+in_progress: []
 ready:
   - id: EPIC-05
     title: CI and publish
     scope: ci
     type: ci
 done:
+  - id: EPIC-04
+    title: Public API and CLI
+    scope: api
+    type: feat
   - id: EPIC-03
     title: Delta lakehouse backend
     scope: delta
