@@ -2,7 +2,7 @@ id: EPIC-03
 title: Delta lakehouse backend
 scope: spark
 type: feat
-status: IN PROGRESS
+status: DONE
 description: The first concrete backend — runs migrations against Delta tables using a SparkSession and tracks applied migrations in a history table stored in Delta format.
 tickets:
   - id: T1
@@ -24,7 +24,7 @@ tickets:
 
   - id: T2
     type: test
-    status: IN PROGRESS
+    status: DONE
     title: Delta backend integration tests
     description: End-to-end test suite that runs the full migration flow against a local Spark + Delta instance.
     ac:

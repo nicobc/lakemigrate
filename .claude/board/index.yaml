@@ -1,9 +1,4 @@
-in_progress:
-  - id: EPIC-03
-    title: SparkSQL lakehouse backend
-    scope: spark
-    type: feat
-    status: IN PROGRESS
+in_progress: []
 ready:
   - id: EPIC-04
     title: Public API and CLI
@@ -16,6 +11,11 @@ ready:
     type: ci
     status: READY
 done:
+  - id: EPIC-03
+    title: Delta lakehouse backend
+    scope: spark
+    type: feat
+    status: DONE
   - id: EPIC-02
     title: Migration runner core
     scope: core
