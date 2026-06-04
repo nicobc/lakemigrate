@@ -17,7 +17,7 @@ Omit the test plan section when there is nothing to test — changes confined to
 After cloning:
 ```bash
 uv sync
-uv run pre-commit install
+git config core.hooksPath .githooks
 ```
 
 ## Branching

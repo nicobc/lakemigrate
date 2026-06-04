@@ -2,12 +2,12 @@ id: EPIC-01
 title: Package scaffolding
 scope: scaffold
 type: chore
-status: READY
+status: DONE
 description: Bootstrap the project as a properly structured Python package — build system, dev tooling, and an importable (but empty) package.
 tickets:
   - id: T1
     type: chore
-    status: READY
+    status: DONE
     title: Initialize package with uv, ruff, pyright, pytest, and pre-commit
     description: Set up pyproject.toml, src/lakemigrate/ layout, ruff (format locally), pyright (type-check everywhere), pytest, and pre-commit hooks.
     ac:

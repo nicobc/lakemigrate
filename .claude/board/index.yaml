@@ -1,10 +1,5 @@
 in_progress:
 ready:
-  - id: EPIC-01
-    title: Package scaffolding
-    scope: scaffold
-    type: chore
-    status: READY
   - id: EPIC-02
     title: Migration runner core
     scope: core
@@ -25,5 +20,10 @@ ready:
     scope: ci
     type: ci
     status: READY
-done: []
+done:
+  - id: EPIC-01
+    title: Package scaffolding
+    scope: scaffold
+    type: chore
+    status: DONE
 ideation: []
