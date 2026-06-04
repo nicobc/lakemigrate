@@ -36,7 +36,7 @@ tickets:
 
   - id: T3
     type: feat
-    status: IN PROGRESS
+    status: DONE
     title: Migration runner
     description: Core execution loop — given a backend and a migrations directory, determine which migrations are pending and execute them in order, recording each on success. Also verifies checksums of already-applied migrations.
     ac:
@@ -54,7 +54,7 @@ tickets:
 
   - id: T4
     type: test
-    status: READY
+    status: IN PROGRESS
     title: In-memory stub backend and runner test suite
     description: A minimal in-memory backend for use in tests, plus a thorough test suite for the runner covering all key paths.
     ac:
