@@ -11,7 +11,7 @@ tickets:
     title: Python API
     description: Top-level migrate() function that users call from a notebook or job. Implicitly uses the SparkSQL backend (the only backend for now); the API will be revisited if a second backend is ever introduced.
     ac:
-      - lakemigrate.migrate(migrations_dir, version_table="default.lakemigrate_history", table_format="delta") runs all pending migrations
+      - lakemigrate.migrate(migrations_dir, history_table="default.lakemigrate_history") runs all pending migrations
       - migrations_dir accepts str or pathlib.Path
       - Function is importable directly from lakemigrate
       - Propagates runner and backend errors without wrapping them
@@ -26,13 +26,13 @@ tickets:
     title: CLI
     description: Shell command that wraps the Python API for use in pipelines and local development.
     ac:
-      - lakemigrate migrate --migrations-dir <path> works with defaults for version-table and table-format
-      - All three options are exposed — --migrations-dir, --version-table, --table-format
+      - lakemigrate migrate --migrations-dir <path> works with default for history-table
+      - Both options are exposed — --migrations-dir, --history-table
       - Non-zero exit code on any error, with a human-readable message to stderr
       - lakemigrate --help and lakemigrate migrate --help are coherent and complete
       - Registered as a console_scripts entry point
     notes:
       - Use argparse (stdlib — no extra dependency)
-      - SparkSession is obtained inside SparkBackend via getActiveSparkSession()
+      - SparkSession is obtained inside SparkBackend via getActiveSession()
       - Entry point name is lakemigrate
-      - Default values for --version-table and --table-format match the Python API defaults
+      - Default value for --history-table matches the Python API default
