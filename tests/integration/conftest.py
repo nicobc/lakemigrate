@@ -20,7 +20,15 @@ def spark() -> Generator[SparkSession, None, None]:
     from delta import configure_spark_with_delta_pip
     from pyspark.sql import SparkSession as _SparkSession
 
-    builder = _SparkSession.builder.master("local").appName("lakemigrate-integration-test")  # type: ignore[reportUnknownMemberType]
+    builder = (  # type: ignore[reportUnknownVariableType]
+        _SparkSession.builder.master("local")  # type: ignore[reportUnknownMemberType]
+        .appName("lakemigrate-integration-test")
+        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+        .config(
+            "spark.sql.catalog.spark_catalog",
+            "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+        )
+    )
     session = configure_spark_with_delta_pip(builder).getOrCreate()  # type: ignore[reportUnknownArgumentType,reportUnknownMemberType]
     yield session
     session.stop()
