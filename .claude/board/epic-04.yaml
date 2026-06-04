@@ -2,12 +2,12 @@ id: EPIC-04
 title: Public API and CLI
 scope: api
 type: feat
-status: READY
+status: DONE
 description: The two user-facing surfaces — a top-level Python function for notebook and job use, and a CLI for pipeline and shell use. Both are thin wrappers over the runner and SparkSQL backend.
 tickets:
   - id: T1
     type: feat
-    status: READY
+    status: DONE
     title: Python API
     description: Top-level migrate() function that users call from a notebook or job. Implicitly uses the SparkSQL backend (the only backend for now); the API will be revisited if a second backend is ever introduced.
     ac:
@@ -22,7 +22,7 @@ tickets:
 
   - id: T2
     type: feat
-    status: READY
+    status: DONE
     title: CLI
     description: Shell command that wraps the Python API for use in pipelines and local development.
     ac:

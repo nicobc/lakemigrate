@@ -2,8 +2,9 @@ import hashlib
 
 import pytest
 
+from lakemigrate._engine import run_migrations
+from lakemigrate._errors import ChecksumMismatchError
 from lakemigrate._migration import Migration
-from lakemigrate._running import run_migrations
 from tests.unit.conftest import StubBackend
 
 
@@ -65,7 +66,7 @@ def test_run_migrations_checksum_mismatch_errors_before_execution(
     m = _migration(1, "CREATE TABLE foo (id INT)")
     stub_backend.applied[1] = "wrong_checksum"
 
-    with pytest.raises(ValueError, match="checksum mismatch"):
+    with pytest.raises(ChecksumMismatchError):
         run_migrations(stub_backend, [m])
 
     assert stub_backend.executed == []
