@@ -6,8 +6,22 @@ build-backend = "hatchling.build"
 name = "lakemigrate"
 version = "0.1.0"
 description = "Ordered SQL migrations with a version table for lakehouse storage"
+readme = "README.md"
+license = "MIT"
+authors = [{name = "Nicolas Contreras", email = "nicolas.b.contreras@gmail.com"}]
 requires-python = ">=3.10"
 dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Database :: Database Engines/Servers",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Homepage = "https://github.com/nicobc/lakemigrate"
+Source = "https://github.com/nicobc/lakemigrate"
+Issues = "https://github.com/nicobc/lakemigrate/issues"
 
 [project.optional-dependencies]
 spark = [
