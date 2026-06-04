@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timezone
 
+from delta.tables import DeltaTable
 from pyspark.sql import SparkSession
 from pyspark.sql.types import IntegerType, StringType, StructField, StructType, TimestampType
 
@@ -33,10 +34,13 @@ class DeltaBackend:
     def _ensure_history_table(self) -> None:
         logger.debug(f"ensuring history table exists: {self._history_table}")
         (
-            self._session.createDataFrame([], schema=_HISTORY_TABLE_SCHEMA)  # type: ignore[reportUnknownMemberType]
-            .write.format("delta")
-            .mode("ignore")
-            .saveAsTable(self._history_table)
+            DeltaTable.createIfNotExists(self._session)
+            .tableName(self._history_table)
+            .addColumn("version", IntegerType(), nullable=False)
+            .addColumn("description", StringType(), nullable=False)
+            .addColumn("checksum", StringType(), nullable=False)
+            .addColumn("applied_at", TimestampType(), nullable=False)
+            .execute()
         )
 
     def execute(self, sql: str) -> None:
