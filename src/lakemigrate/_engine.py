@@ -1,12 +1,16 @@
 import hashlib
+import logging
 import re
 from pathlib import Path
 
 from lakemigrate._backend.delta import DEFAULT_HISTORY_TABLE, DeltaBackend
 from lakemigrate._backend.protocol import Backend
+from lakemigrate._errors import ChecksumMismatchError, DuplicateVersionError, InvalidFilenameError
 from lakemigrate._migration import Migration
 
-_PATTERN = re.compile(r"^(\d+)__(.+)\.sql$")
+logger = logging.getLogger(__name__)
+
+_PATTERN = re.compile(r"^(\d{3})__(.+)\.sql$")
 
 
 def discover_migrations(directory: Path) -> list[Migration]:
@@ -18,12 +22,13 @@ def discover_migrations(directory: Path) -> list[Migration]:
             continue
         match = _PATTERN.match(path.name)
         if not match:
-            raise ValueError(
-                f"migration file does not match naming convention NNN__description.sql: {path.name}"
+            raise InvalidFilenameError(
+                f"migration file does not match naming convention "
+                f"001__description.sql: {path.name}"
             )
         version = int(match.group(1))
         if version in seen:
-            raise ValueError(f"duplicate migration version: {version}")
+            raise DuplicateVersionError(f"duplicate migration version: {version}")
         seen.add(version)
         raw = path.read_bytes()
         migrations.append(
@@ -45,7 +50,7 @@ def run_migrations(backend: Backend, migrations: list[Migration]) -> None:
         if migration.version not in applied:
             continue
         if migration.checksum != applied[migration.version]:
-            raise ValueError(
+            raise ChecksumMismatchError(
                 f"checksum mismatch for migration {migration.version}: "
                 f"file has changed since it was applied"
             )
@@ -53,11 +58,13 @@ def run_migrations(backend: Backend, migrations: list[Migration]) -> None:
     for migration in migrations:
         if migration.version in applied:
             continue
+        logger.info(f"applying migration {migration.version}: {migration.description}")
         backend.execute(migration.sql)
         backend.record_version(migration.version, migration.description, migration.checksum)
 
 
 def migrate(migrations_dir: str | Path, history_table: str = DEFAULT_HISTORY_TABLE) -> None:
+    logger.debug(f"migrating from {migrations_dir} using history table {history_table}")
     backend = DeltaBackend(history_table=history_table)
     migrations = discover_migrations(Path(migrations_dir))
     run_migrations(backend, migrations)

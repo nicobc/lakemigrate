@@ -31,6 +31,7 @@ class DeltaBackend:
         self._ensure_history_table()
 
     def _ensure_history_table(self) -> None:
+        logger.debug(f"ensuring history table exists: {self._history_table}")
         self._session.sql(  # type: ignore[reportUnknownMemberType]
             f"CREATE TABLE IF NOT EXISTS {self._history_table} "
             f"(version INT, description STRING, checksum STRING, applied_at TIMESTAMP) "
@@ -45,6 +46,7 @@ class DeltaBackend:
         return {int(row["version"]): str(row["checksum"]) for row in rows}
 
     def record_version(self, version: int, description: str, checksum: str) -> None:
+        logger.debug(f"recording migration {version} in {self._history_table}")
         self._session.createDataFrame(  # type: ignore[reportUnknownMemberType]
             [(version, description, checksum, datetime.now(timezone.utc))],
             schema=_HISTORY_TABLE_SCHEMA,

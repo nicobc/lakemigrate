@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from lakemigrate._engine import discover_migrations, run_migrations
+from lakemigrate._errors import ChecksumMismatchError
 
 if TYPE_CHECKING:
     from lakemigrate._backend.delta import DeltaBackend
@@ -47,5 +48,5 @@ def test_checksum_mismatch(
     write_migration(1, "init_a", "CREATE OR REPLACE TEMP VIEW mig_v1 AS SELECT 1 AS id")
     run_migrations(backend, discover_migrations(tmp_path))
     (tmp_path / "001__init_a.sql").write_text("-- modified")
-    with pytest.raises(ValueError, match="checksum mismatch"):
+    with pytest.raises(ChecksumMismatchError):
         run_migrations(backend, discover_migrations(tmp_path))
