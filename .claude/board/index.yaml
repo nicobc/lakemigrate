@@ -1,9 +1,9 @@
-in_progress: []
-ready:
+in_progress:
   - id: EPIC-05
     title: CI and publish
     scope: ci
     type: ci
+ready:
 done:
   - id: EPIC-04
     title: Public API and CLI

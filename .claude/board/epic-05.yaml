@@ -6,6 +6,24 @@ status: READY
 description: GitHub Actions workflows — one to run the test suite on every push and PR, one to publish to PyPI on a SemVer tag.
 tickets:
   - id: T1
+    type: docs
+    status: IN PROGRESS
+    title: Package publishing metadata and API documentation
+    description: Add README.md, MIT LICENSE, complete pyproject.toml publishing metadata, and Google-format docstrings on all public API symbols — the full developer-experience baseline before the package ships to PyPI.
+    ac:
+      - README.md covers project badges (PyPI version, Python versions, license, CI status), description, installation (base and spark extra), CLI quick-start, Python API quick-start, and links to source/issues
+      - LICENSE is MIT with correct year and author
+      - pyproject.toml gains readme, license (SPDX "MIT"), authors, classifiers (Programming Language :: Python :: 3, Operating System :: OS Independent, Topic :: Database :: Database Engines/Servers, License :: OSI Approved :: MIT License), and [project.urls] (Homepage, Source, Issues)
+      - All symbols in __all__ (migrate, LakeMigrateError, ChecksumMismatchError, DuplicateVersionError, InvalidFilenameError) have Google-format docstrings with Args/Returns/Raises sections as applicable
+      - discover_migrations, run_migrations, and Backend protocol methods have Google-format docstrings (non-trivial operations per project skill)
+      - pyright and ruff check still pass after all changes
+    notes:
+      - MIT license, year 2026, author Nicolas Contreras
+      - Use only the generic Programming Language :: Python :: 3 classifier — per-minor classifiers are decorative, pip ignores them, and requires-python = ">=3.10" is the enforced floor
+      - README badges link to PyPI (once published) and the GitHub Actions CI workflow on nicobc/lakemigrate
+      - Docstrings follow project python skill — Google format, Example section only for non-trivial operations; migrate warrants an Example
+
+  - id: T2
     type: ci
     status: READY
     title: Test workflow
@@ -22,7 +40,7 @@ tickets:
       - Install Java via actions/setup-java before uv setup
       - Cache the uv virtualenv keyed on pyproject.toml hash
 
-  - id: T2
+  - id: T3
     type: ci
     status: READY
     title: Publish workflow
