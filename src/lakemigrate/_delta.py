@@ -6,7 +6,7 @@ from pyspark.sql.types import IntegerType, StringType, StructField, StructType, 
 
 logger = logging.getLogger(__name__)
 
-_DEFAULT_HISTORY_TABLE = "default.lakemigrate_history"
+DEFAULT_HISTORY_TABLE = "default.lakemigrate_history"
 
 _HISTORY_TABLE_SCHEMA = StructType(
     [
@@ -21,7 +21,7 @@ _HISTORY_TABLE_SCHEMA = StructType(
 class DeltaBackend:
     def __init__(
         self,
-        history_table: str = _DEFAULT_HISTORY_TABLE,
+        history_table: str = DEFAULT_HISTORY_TABLE,
     ) -> None:
         session = SparkSession.getActiveSession()
         if session is None:
