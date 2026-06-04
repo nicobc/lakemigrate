@@ -7,7 +7,7 @@ description: GitHub Actions workflows — one to run the test suite on every pus
 tickets:
   - id: T1
     type: docs
-    status: IN PROGRESS
+    status: DONE
     title: Package publishing metadata and API documentation
     description: Add README.md, MIT LICENSE, complete pyproject.toml publishing metadata, and Google-format docstrings on all public API symbols — the full developer-experience baseline before the package ships to PyPI.
     ac:
