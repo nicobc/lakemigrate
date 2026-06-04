@@ -28,7 +28,9 @@ Work on short-lived feature branches cut directly from `main`. Branch name mirro
 
 Releases are planned in `.claude/board/` — `index.yaml` for the overview, individual epic files for ticket detail. Each release bundles one or more complete epics. Never ship a partial epic.
 
-A release requires a SemVer tag if the epic contains any `feat` or `fix` tickets. Pure `ci`/`chore`/`docs` epics do not.
+A SemVer tag is the PyPI publish trigger — it is only created when the package is ready to ship to PyPI. Merging epics to main does not automatically warrant a tag; multiple epics typically accumulate on main before a release is cut. The repo SemVer mirrors the package SemVer exactly.
+
+A release requires a SemVer tag if it contains any `feat` or `fix` epics. Pure `ci`/`chore`/`docs` releases do not.
 
 ## Process
 
@@ -57,7 +59,7 @@ Before writing any status value to a board file, confirm the ticket's current st
    git branch -D type/scope
    ```
    `-D` required — squash merges leave the local branch unrecognised as merged by git.
-9. _(Only if the release contains any `feat` or `fix` tickets)_ Create and push a SemVer tag from main:
+9. _(Only when all epics in the release are merged and the package is ready to publish to PyPI)_ Create and push a SemVer tag from main:
    ```bash
    git fetch origin main
    git tag vMAJOR.MINOR.PATCH origin/main
