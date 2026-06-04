@@ -1,6 +1,6 @@
 id: EPIC-05
 title: CI and publish
-scope: ci
+scope: pypi
 type: ci
 status: READY
 description: GitHub Actions workflows — one to run the test suite on every push and PR, one to publish to PyPI on a SemVer tag.
@@ -25,7 +25,7 @@ tickets:
 
   - id: T2
     type: ci
-    status: READY
+    status: IN PROGRESS
     title: Test workflow
     description: Run the full test suite (unit + integration) on every push and on PRs targeting main. Reports a required status check named "status" to satisfy branch protection.
     ac:
