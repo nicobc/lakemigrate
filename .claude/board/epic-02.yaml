@@ -2,12 +2,12 @@ id: EPIC-02
 title: Migration runner core
 scope: core
 type: feat
-status: READY
+status: IN PROGRESS
 description: The backend-agnostic heart of lakemigrate — a protocol backends must satisfy, migration file discovery, and the execution loop. No Spark or Delta dependency here.
 tickets:
   - id: T1
     type: feat
-    status: READY
+    status: IN PROGRESS
     title: Backend protocol
     description: Define the Python Protocol that all backends must implement. Internal abstraction — not exposed in the public API.
     ac:

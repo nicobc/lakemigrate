@@ -1,10 +1,10 @@
 in_progress:
-ready:
   - id: EPIC-02
     title: Migration runner core
     scope: core
     type: feat
-    status: READY
+    status: IN PROGRESS
+ready:
   - id: EPIC-03
     title: SparkSQL lakehouse backend
     scope: spark
